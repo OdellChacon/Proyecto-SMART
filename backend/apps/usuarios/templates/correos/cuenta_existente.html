@@ -1,0 +1,6 @@
+{% extends "correos/base.html" %}
+{% block contenido %}
+<p style="margin:0 0 16px;">Hola, {{ usuario.nombres }}:</p>
+<p style="margin:0;">Alguien intentó crear una cuenta nueva con este correo, pero ya tienes una. Puedes ingresar con tu contraseña de siempre o, si no la recuerdas, crear una nueva.</p>
+{% include "correos/_boton.html" with texto="Recuperar mi contraseña" %}
+{% endblock %}

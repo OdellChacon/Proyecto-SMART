@@ -1,0 +1,38 @@
+# Servicios de apoyo para desarrollo local.
+# Django y el frontend corren en la máquina (ver README); aquí solo viven
+# la base de datos y el buzón de correo de pruebas.
+name: plataforma-universitaria
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-plataforma}
+      POSTGRES_USER: ${POSTGRES_USER:-plataforma}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Define POSTGRES_PASSWORD en .env}
+    ports:
+      # Solo accesible desde esta máquina.
+      - "127.0.0.1:${POSTGRES_PORT:-5435}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Captura todos los correos que envía Django en desarrollo.
+  # Bandeja web: http://localhost:8026
+  mailpit:
+    image: axllent/mailpit:latest
+    restart: unless-stopped
+    environment:
+      # Sin búsqueda DNS inversa: en Docker tarda ~8 s por correo en fallar.
+      MP_SMTP_DISABLE_RDNS: "true"
+    ports:
+      - "127.0.0.1:${MAILPIT_UI_PORT:-8026}:8025"
+      - "127.0.0.1:${MAILPIT_SMTP_PORT:-1026}:1025"
+
+volumes:
+  pgdata:

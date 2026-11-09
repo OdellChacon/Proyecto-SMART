@@ -1,0 +1,71 @@
+@import "tailwindcss";
+@import "@fontsource-variable/source-sans-3";
+@import "@fontsource-variable/source-serif-4";
+@import "./tokens.css";
+
+@theme {
+  --animate-aparecer: aparecer 280ms ease-out backwards;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+
+  body {
+    @apply bg-pagina font-sans text-base text-texto antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-serif font-semibold text-texto;
+  }
+
+  a {
+    @apply text-enlace underline underline-offset-4;
+  }
+
+  html {
+    scroll-padding-top: 1.5rem;
+  }
+
+  /* Las preguntas frecuentes y otros desplegables se abren con suavidad donde el navegador lo admite. */
+  details::details-content {
+    block-size: 0;
+    overflow-y: clip;
+    transition:
+      block-size 220ms ease-out,
+      content-visibility 220ms allow-discrete;
+  }
+
+  details[open]::details-content {
+    block-size: auto;
+  }
+
+  :root {
+    interpolate-size: allow-keywords;
+  }
+
+  /* Foco visible en todo el sitio (WCAG 2.2 AA). */
+  :focus-visible {
+    outline: 3px solid var(--color-foco);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

@@ -1,0 +1,65 @@
+/*
+ * Tokens del sistema de diseño (espejo de las variables de Figma:
+ * "Sitio web institucional · Diseño v1" › Primitivos / Color / Espaciado y forma).
+ * Colores provisionales hasta recibir la identidad oficial: se cambian aquí y
+ * se actualiza todo el sitio.
+ */
+@theme {
+  /* Tipografía: dos familias, texto base de 18 px para lectores mayores. */
+  --font-sans: "Source Sans 3 Variable", "Source Sans 3", system-ui, sans-serif;
+  --font-serif: "Source Serif 4 Variable", "Source Serif 4", Georgia, serif;
+
+  --text-xs: 0.875rem;
+  --text-xs--line-height: 1.25rem;
+  --text-sm: 1rem;
+  --text-sm--line-height: 1.5rem;
+  --text-base: 1.125rem;
+  --text-base--line-height: 1.75rem;
+  --text-lg: 1.3125rem;
+  --text-lg--line-height: 2.0625rem;
+  --text-xl: 1.5rem;
+  --text-xl--line-height: 2rem;
+  --text-2xl: 2rem;
+  --text-2xl--line-height: 2.5rem;
+  --text-3xl: 2.75rem;
+  --text-3xl--line-height: 3.25rem;
+
+  /* Fondos */
+  --color-pagina: #ffffff;
+  --color-superficie: #ffffff;
+  --color-sutil: #f7f5f1;
+  --color-apagado: #efece6;
+  --color-marca: #0f2a47;
+  --color-marca-medio: #1d4a7a;
+  --color-marca-sutil: #eaf0f7;
+  --color-acento: #b5462a;
+  --color-acento-hover: #963820;
+  --color-acento-sutil: #fbede8;
+
+  /* Texto */
+  --color-texto: #1c1b19;
+  --color-texto-secundario: #5b5750;
+  --color-sobre-marca: #ffffff;
+  --color-sobre-marca-suave: #d3e0ee;
+  --color-enlace: #1d4a7a;
+
+  /* Bordes */
+  --color-borde: #e0dcd3;
+  --color-borde-fuerte: #c9c4b9;
+  --color-borde-campo: #7a756c;
+  --color-foco: #1d4a7a;
+
+  /* Estados */
+  --color-exito: #1e6b3a;
+  --color-exito-sutil: #e7f3ec;
+  --color-error: #b3261e;
+  --color-error-sutil: #fbeae9;
+  --color-aviso: #8a5a00;
+  --color-aviso-sutil: #fdf3e1;
+
+  /* Forma */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 20px;
+}

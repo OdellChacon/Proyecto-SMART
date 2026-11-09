@@ -1,0 +1,13 @@
+{% autoescape off %}
+Llegó un mensaje desde el formulario de contacto del sitio web.
+
+Nombre: {{ m.nombre }}
+Correo: {{ m.correo }}
+Asunto: {{ m.asunto }}
+
+Mensaje:
+{{ m.mensaje }}
+
+Para contestar, responde a este correo: le llega directo a {{ m.nombre }}.
+Cuando lo atiendas, márcalo como atendido en el panel: {{ panel }}
+{% endautoescape %}

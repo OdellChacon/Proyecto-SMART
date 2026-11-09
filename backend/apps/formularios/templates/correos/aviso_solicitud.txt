@@ -1,0 +1,14 @@
+{% autoescape off %}
+Llegó una solicitud de información desde el sitio web.
+
+Nombre: {{ s.nombre }}
+Correo: {{ s.correo }}
+Teléfono: {{ s.telefono|default:"No indicó" }}
+Carrera: {{ s.carrera|default:"No indicó" }}
+
+Mensaje:
+{{ s.mensaje|default:"(sin mensaje)" }}
+
+Para contestar, responde a este correo: le llega directo a {{ s.nombre }}.
+Cuando la atiendas, márcala como atendida en el panel: {{ panel }}
+{% endautoescape %}

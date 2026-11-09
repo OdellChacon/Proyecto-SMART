@@ -1,0 +1,26 @@
+{% extends "admin/index.html" %}
+{% load panel %}
+
+{% block content %}
+{% resumen_flujo request.user as resumen %}
+{% if resumen %}
+<div class="module panel-flujo">
+  <h2>Flujo de publicación</h2>
+  {% if resumen.filas %}
+  <ul>
+    {% for f in resumen.filas %}
+      {% if resumen.aprobador and f.pendientes %}
+      <li><a href="{{ f.url_pendientes }}"><strong>{{ f.tipo }}:</strong> {{ f.pendientes }} espera{{ f.pendientes|pluralize:"n" }} tu revisión</a></li>
+      {% endif %}
+      {% if f.devueltos %}
+      <li><a href="{{ f.url_devueltos }}"><strong>{{ f.tipo }}:</strong> te devolvieron {{ f.devueltos }} con comentarios</a></li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>No hay nada pendiente.{% if resumen.aprobador %} Cuando un editor envíe contenido a revisión aparecerá aquí y te llegará un correo.{% endif %}</p>
+  {% endif %}
+</div>
+{% endif %}
+{{ block.super }}
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "admin/base_site.html" %}
+
+{% block extrastyle %}{{ block.super }}
+<style>
+  /* Colores del sistema de diseño del sitio (tokens.css) y letra algo más grande:
+     el panel lo usará personal no técnico y de mayor edad. */
+  :root, html[data-theme="light"] {
+    --primary: #0f2a47;
+    --secondary: #1d4a7a;
+    --accent: #f3c7b8;
+    --primary-fg: #ffffff;
+    --header-color: #d3e0ee;
+    --header-branding-color: #ffffff;
+    --header-bg: #0f2a47;
+    --header-link-color: #ffffff;
+    --breadcrumbs-bg: #1d4a7a;
+    --link-fg: #1d4a7a;
+    --link-hover-color: #0f2a47;
+    --link-selected-fg: #0f2a47;
+    --button-bg: #1d4a7a;
+    --button-hover-bg: #0f2a47;
+    --default-button-bg: #b5462a;
+    --default-button-hover-bg: #963820;
+    --selected-row: #fbede8;
+  }
+  body { font-size: 15px; }
+  #branding h1, #site-name { font-weight: 600; }
+  .panel-flujo ul { margin: 0; padding: 8px 12px 12px 28px; }
+  .panel-flujo li { list-style: disc; padding: 4px 0; font-size: 15px; }
+  .panel-flujo p { margin: 0; padding: 10px 12px; }
+</style>
+{% endblock %}

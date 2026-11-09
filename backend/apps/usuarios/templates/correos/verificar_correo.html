@@ -1,0 +1,7 @@
+{% extends "correos/base.html" %}
+{% block contenido %}
+<p style="margin:0 0 16px;">Hola, {{ usuario.nombres }}:</p>
+<p style="margin:0;">Gracias por crear tu cuenta. Para activarla, confirma que este es tu correo.</p>
+{% include "correos/_boton.html" with texto="Confirmar mi correo" %}
+<p style="margin:0;font-size:16px;color:#5B5750;">El enlace vence en 24 horas.</p>
+{% endblock %}

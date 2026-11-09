@@ -1,0 +1,109 @@
+# Despliegue en Render (Blueprint). Render › New › Blueprint › elegir este repositorio.
+#
+# - plataforma-web: el sitio (Node). Es lo único público; reenvía /api, /admin, /static
+#   y /media a la API por la red privada de Render.
+# - plataforma-api: Django + DRF como servicio PRIVADO (no tiene dirección pública).
+# - plataforma-db: PostgreSQL 17 administrado, con copias diarias de Render.
+# - plataforma-respaldos: copia diaria extra de la base de datos a Cloudflare R2.
+#
+# Las variables con «sync: false» se completan a mano en el panel de Render la primera vez.
+# Dominio: apuntar el dominio (Cloudflare, proxy activado) a plataforma-web.
+
+databases:
+  - name: plataforma-db
+    databaseName: plataforma
+    user: plataforma
+    postgresMajorVersion: "17"
+    plan: basic-256mb
+    region: virginia
+    ipAllowList: []  # solo accesible desde los servicios de Render
+
+services:
+  - type: pserv
+    name: plataforma-api
+    runtime: python
+    region: virginia
+    plan: starter
+    rootDir: backend
+    buildCommand: pip install -r requirements/base.txt && python manage.py collectstatic --noinput
+    preDeployCommand: python manage.py migrate --noinput && python manage.py createcachetable
+    startCommand: gunicorn config.wsgi --workers 3 --timeout 60 --bind 0.0.0.0:$PORT --access-logfile -
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.13.5"
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings.prod
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase: { name: plataforma-db, property: connectionString }
+      # Dominio público + nombre interno del servicio (lo usa el render en servidor).
+      - key: DJANGO_ALLOWED_HOSTS
+        sync: false  # ej.: universidad.edu.ve,www.universidad.edu.ve,plataforma-api
+      - key: FRONTEND_URL
+        sync: false  # ej.: https://universidad.edu.ve
+      - key: DJANGO_CSRF_TRUSTED_ORIGINS
+        sync: false  # ej.: https://universidad.edu.ve
+      # Cloudflare + servidor web de Render delante de Django.
+      - key: DJANGO_NUM_PROXIES
+        value: "2"
+      # El servidor web ya redirige a HTTPS; el tráfico interno va por la red privada.
+      - key: DJANGO_SECURE_SSL_REDIRECT
+        value: "false"
+      # Correo transaccional (Brevo, Resend u otro por SMTP).
+      - { key: EMAIL_HOST, sync: false }
+      - { key: EMAIL_PORT, value: "587" }
+      - { key: EMAIL_USE_TLS, value: "true" }
+      - { key: EMAIL_HOST_USER, sync: false }
+      - { key: EMAIL_HOST_PASSWORD, sync: false }
+      - { key: DEFAULT_FROM_EMAIL, sync: false }
+      - { key: NOMBRE_INSTITUCION, sync: false }
+      - { key: CORREOS_AVISO_FORMULARIOS, sync: false }
+      - { key: TURNSTILE_SECRET_KEY, sync: false }
+      # Archivos en Cloudflare R2.
+      - { key: R2_BUCKET, sync: false }
+      - { key: R2_ENDPOINT, sync: false }
+      - { key: R2_ACCESS_KEY_ID, sync: false }
+      - { key: R2_SECRET_ACCESS_KEY, sync: false }
+      - { key: R2_DOMINIO_PUBLICO, sync: false }
+
+  - type: web
+    name: plataforma-web
+    runtime: node
+    region: virginia
+    plan: starter
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /salud
+    envVars:
+      - key: NODE_VERSION
+        value: "20.19.4"
+      - key: API_INTERNA_URL
+        fromService: { type: pserv, name: plataforma-api, property: hostport }
+      - key: SITIO_URL
+        sync: false  # ej.: https://universidad.edu.ve (para sitemap.xml y robots.txt)
+      - key: PROXIES_DE_CONFIANZA
+        value: "2"
+      # Se leen al compilar (VITE_*): cambiar el valor exige volver a desplegar.
+      - { key: VITE_TURNSTILE_SITE_KEY, sync: false }
+      - { key: VITE_CF_ANALYTICS_TOKEN, sync: false }
+
+  - type: cron
+    name: plataforma-respaldos
+    runtime: docker
+    region: virginia
+    plan: starter
+    schedule: "0 7 * * *"  # todos los días a las 3:00 a. m. de Venezuela
+    dockerfilePath: ./infra/respaldos/Dockerfile
+    dockerContext: .
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase: { name: plataforma-db, property: connectionString }
+      - { key: R2_RESPALDOS_BUCKET, sync: false }
+      - { key: R2_ENDPOINT, sync: false }
+      - { key: R2_ACCESS_KEY_ID, sync: false }
+      - { key: R2_SECRET_ACCESS_KEY, sync: false }
+      - { key: R2_BUCKET, sync: false }
+      - key: DIAS_A_CONSERVAR
+        value: "30"

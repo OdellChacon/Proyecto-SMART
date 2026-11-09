@@ -1,0 +1,44 @@
+{
+  "name": "plataforma-universitaria-web",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "dev": "react-router dev",
+    "build": "react-router build",
+    "start": "node server.mjs",
+    "typecheck": "react-router typegen && tsc",
+    "iconos": "node scripts/generar-iconos.mjs",
+    "capturas-manual": "node scripts/capturas-manual.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/source-sans-3": "^5.3.1",
+    "@fontsource-variable/source-serif-4": "^5.3.1",
+    "@react-router/express": "^7.18.5",
+    "@react-router/node": "^7.18.5",
+    "@react-router/serve": "^7.18.5",
+    "compression": "^1.8.2",
+    "express": "^5.3.0",
+    "http-proxy-middleware": "^3.0.10",
+    "isbot": "^5.2.2",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router": "^7.18.5"
+  },
+  "devDependencies": {
+    "@react-router/dev": "^7.18.5",
+    "@tailwindcss/vite": "4.3.4",
+    "@types/compression": "^1.8.1",
+    "@types/express": "^5.0.6",
+    "@types/node": "^20.19.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "puppeteer-core": "^24.43.1",
+    "sharp": "^0.35.5",
+    "tailwindcss": "4.3.4",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.6"
+  }
+}

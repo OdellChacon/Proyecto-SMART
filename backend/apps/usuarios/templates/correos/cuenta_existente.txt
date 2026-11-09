@@ -1,0 +1,8 @@
+Hola, {{ usuario.nombres }}:
+
+Alguien intentó crear una cuenta nueva en {{ institucion }} con este correo, pero ya tienes una.
+Puedes ingresar con tu contraseña de siempre o, si no la recuerdas, crear una nueva aquí:
+
+{{ enlace }}
+
+Si no fuiste tú, puedes ignorar este mensaje.

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>Plataforma universitaria</title>
+  <!-- Fondo: azul institucional (fondo/marca) -->
+  <rect width="64" height="64" rx="14" fill="#0F2A47"/>
+  <!-- Birrete -->
+  <path d="M32 13 57 24 32 35 7 24Z" fill="#FFFFFF"/>
+  <path d="M17 29.5v9.5c0 4.7 6.7 8.5 15 8.5s15-3.8 15-8.5v-9.5L32 36.5Z" fill="#D3E0EE"/>
+  <!-- Borla: color de acento (fondo/acento) -->
+  <path d="M32 24 51 27V41" fill="none" stroke="#E2603F" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="32" cy="24" r="2.75" fill="#E2603F"/>
+  <circle cx="51" cy="44" r="3.75" fill="#E2603F"/>
+</svg>

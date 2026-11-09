@@ -1,0 +1,7 @@
+Hola, {{ usuario.nombres }}:
+
+Recibimos una solicitud para cambiar la contraseña de tu cuenta en {{ institucion }}. Crea una nueva en este enlace:
+
+{{ enlace }}
+
+El enlace vence en 24 horas y solo sirve una vez. Si no pediste el cambio, ignora este correo: tu contraseña sigue igual.
