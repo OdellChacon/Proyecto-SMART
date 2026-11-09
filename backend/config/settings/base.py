@@ -69,23 +69,26 @@ TEMPLATES = [
     },
 ]
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": env("POSTGRES_DB"),
-        "USER": env("POSTGRES_USER"),
-        "PASSWORD": env("POSTGRES_PASSWORD"),
-        "HOST": env("POSTGRES_HOST", default="127.0.0.1"),
-        "PORT": env("POSTGRES_PORT", default="5435"),
-        "CONN_MAX_AGE": 60,
-        # Descarta conexiones caídas (reinicio de la base o conexión inestable).
-        "CONN_HEALTH_CHECKS": True,
-    }
+# En Render la base llega como una sola variable DATABASE_URL; en local, como POSTGRES_*.
+# (Se elige antes de leer POSTGRES_*: si no, faltarían en Render y Django no arrancaría.)
+_CONEXION = {
+    "CONN_MAX_AGE": 60,
+    # Descarta conexiones caídas (reinicio de la base o conexión inestable).
+    "CONN_HEALTH_CHECKS": True,
 }
-# En Render la base llega como una sola variable DATABASE_URL.
 if env("DATABASE_URL", default=""):
-    DATABASES["default"] = {
-        **env.db("DATABASE_URL"), "CONN_MAX_AGE": 60, "CONN_HEALTH_CHECKS": True,
+    DATABASES = {"default": {**env.db("DATABASE_URL"), **_CONEXION}}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": env("POSTGRES_DB"),
+            "USER": env("POSTGRES_USER"),
+            "PASSWORD": env("POSTGRES_PASSWORD"),
+            "HOST": env("POSTGRES_HOST", default="127.0.0.1"),
+            "PORT": env("POSTGRES_PORT", default="5435"),
+            **_CONEXION,
+        }
     }
 
 # --- Usuarios y autenticación ---
