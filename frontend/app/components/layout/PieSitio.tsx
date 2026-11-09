@@ -3,48 +3,57 @@ import { Link } from "react-router";
 import { Icono } from "~/components/ui/Icono";
 import { Marca } from "~/components/ui/Marca";
 import { correoLimpio, telefonoParaEnlace } from "~/lib/formato";
-import { MENU } from "~/lib/mapa";
+import { ACCESOS_SISTEMAS, MENU } from "~/lib/mapa";
 import type { Sitio } from "~/lib/tipos";
 
-const enlace = "text-sobre-marca no-underline hover:underline";
+/** Enlace claro sobre azul: subrayado terracota fino que aparece al pasar el puntero. */
+const enlace =
+  "text-sobre-marca-suave no-underline transition-colors hover:text-sobre-marca hover:underline decoration-acento-claro underline-offset-4";
+const titulo = "mb-3 font-sans text-xs font-bold tracking-widest text-sobre-marca-suave/70 uppercase";
 
-/** El pie repite contacto, redes, aviso de privacidad y enlaces legales. */
+/**
+ * Pie compacto: una franja con marca, contacto y enlaces, y una línea final con
+ * derechos y enlaces legales. Las subsecciones ya están en el menú y en cada página.
+ */
 export function PieSitio({ sitio }: { sitio: Sitio }) {
   const ano = new Date().getFullYear();
   return (
-    <footer className="mt-auto bg-marca text-sobre-marca">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
-        <div className="flex flex-col gap-4">
+    <footer className="mt-auto border-t-2 border-acento bg-marca text-sm text-sobre-marca [&_:focus-visible]:outline-sobre-marca">
+      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:grid-cols-2 sm:px-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,0.8fr)] lg:gap-10">
+        <div className="flex flex-col gap-3">
           <Marca claro nombre={sitio.nombre} subtitulo={sitio.lema} />
           {sitio.direccion && (
-            <p className="flex gap-2 text-sobre-marca-suave">
-              <Icono nombre="ubicacion" className="mt-1" tamano={20} />
-              <span>{sitio.direccion}</span>
+            <p className="flex gap-2">
+              <Icono nombre="ubicacion" className="mt-0.5 shrink-0 text-acento-claro" tamano={16} />
+              <Link to="/contacto#ubicacion" prefetch="intent" className={enlace}>
+                {sitio.direccion}
+              </Link>
             </p>
           )}
         </div>
 
         <div>
-          <h2 className="mb-4 font-sans text-sm font-bold tracking-widest text-sobre-marca-suave uppercase">
-            Contacto
-          </h2>
-          <ul className="flex flex-col gap-2">
+          <h2 className={titulo}>Contacto</h2>
+          <ul className="flex flex-col gap-1.5">
             {sitio.telefonos.map((t) => (
-              <li key={t}>
+              <li key={t} className="flex gap-2">
+                <Icono nombre="telefono" tamano={16} className="mt-0.5 shrink-0 text-acento-claro" />
                 <a href={`tel:${telefonoParaEnlace(t)}`} className={enlace}>
                   {t}
                 </a>
               </li>
             ))}
             {sitio.correos.map((c) => (
-              <li key={c} className="break-words">
-                <a href={`mailto:${correoLimpio(c)}`} className={enlace}>
+              <li key={c} className="flex min-w-0 gap-2">
+                <Icono nombre="correo" tamano={16} className="mt-0.5 shrink-0 text-acento-claro" />
+                <a href={`mailto:${correoLimpio(c)}`} className={`${enlace} min-w-0 break-words`}>
                   {c}
                 </a>
               </li>
             ))}
             {sitio.horario.map((h) => (
-              <li key={h} className="text-sobre-marca-suave">
+              <li key={h} className="flex gap-2 text-sobre-marca-suave">
+                <Icono nombre="reloj" tamano={16} className="mt-0.5 shrink-0 text-acento-claro" />
                 {h}
               </li>
             ))}
@@ -52,10 +61,8 @@ export function PieSitio({ sitio }: { sitio: Sitio }) {
         </div>
 
         <nav aria-label="Secciones del sitio">
-          <h2 className="mb-4 font-sans text-sm font-bold tracking-widest text-sobre-marca-suave uppercase">
-            El sitio
-          </h2>
-          <ul className="flex flex-col gap-2">
+          <h2 className={titulo}>El sitio</h2>
+          <ul className="grid grid-cols-2 gap-x-4 gap-y-1.5">
             {MENU.map((s) => (
               <li key={s.url}>
                 <Link prefetch="intent" to={s.url} className={enlace}>
@@ -66,13 +73,23 @@ export function PieSitio({ sitio }: { sitio: Sitio }) {
           </ul>
         </nav>
 
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-6">
+          <nav aria-label="Accesos a los sistemas">
+            <h2 className={titulo}>Accesos</h2>
+            <ul className="flex flex-col gap-1.5">
+              {ACCESOS_SISTEMAS.map((a) => (
+                <li key={a.url}>
+                  <Link prefetch="intent" to={a.url} className={enlace}>
+                    {a.titulo}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
           {sitio.perfil_redes.length > 0 && (
             <div>
-              <h2 className="mb-4 font-sans text-sm font-bold tracking-widest text-sobre-marca-suave uppercase">
-                Redes
-              </h2>
-              <ul className="flex flex-col gap-2">
+              <h2 className={titulo}>Redes</h2>
+              <ul className="flex flex-wrap gap-x-4 gap-y-1.5">
                 {sitio.perfil_redes.map((r) => (
                   <li key={r.red}>
                     <a href={r.url} className={enlace} rel="noopener noreferrer" target="_blank">
@@ -84,11 +101,16 @@ export function PieSitio({ sitio }: { sitio: Sitio }) {
               </ul>
             </div>
           )}
+        </div>
+      </div>
+
+      <div className="border-t border-white/10">
+        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-4 text-xs text-sobre-marca-suave sm:flex-row sm:items-center sm:justify-between sm:px-6">
+          <p>
+            © {ano} {sitio.nombre}
+          </p>
           <nav aria-label="Enlaces legales">
-            <h2 className="mb-4 font-sans text-sm font-bold tracking-widest text-sobre-marca-suave uppercase">
-              Legal
-            </h2>
-            <ul className="flex flex-col gap-2">
+            <ul className="flex flex-wrap gap-x-5 gap-y-1">
               <li>
                 <Link prefetch="intent" to="/privacidad" className={enlace}>
                   Aviso de privacidad
@@ -107,11 +129,6 @@ export function PieSitio({ sitio }: { sitio: Sitio }) {
             </ul>
           </nav>
         </div>
-      </div>
-      <div className="border-t border-white/15">
-        <p className="mx-auto max-w-7xl px-4 py-5 text-sm text-sobre-marca-suave sm:px-6">
-          © {ano} {sitio.nombre}. Todos los derechos reservados.
-        </p>
       </div>
     </footer>
   );

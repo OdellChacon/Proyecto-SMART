@@ -4,6 +4,7 @@ import { ListaDocumentos } from "~/components/sitio/ListaDocumentos";
 import { CabeceraPagina, TituloBloque } from "~/components/sitio/Pagina";
 import { TarjetaCarrera, TarjetaNoticia } from "~/components/sitio/Tarjetas";
 import { Icono } from "~/components/ui/Icono";
+import { FLECHA, LineaAcento, TARJETA_ENLACE } from "~/components/ui/Tarjeta";
 import { obtener } from "~/lib/contenido.server";
 import { metaDePagina } from "~/lib/meta";
 import type { ResultadosBusqueda } from "~/lib/tipos";
@@ -85,8 +86,9 @@ export default function Buscar({ loaderData }: Route.ComponentProps) {
                 <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {r.paginas.map((p) => (
                     <li key={p.url}>
-                      <Link to={p.url} prefetch="intent" className="flex min-h-16 items-center justify-between gap-3 rounded-lg border border-borde px-5 font-semibold text-texto no-underline transition-colors hover:border-marca-medio hover:bg-marca-sutil">
-                        {p.titulo} <Icono nombre="flecha-derecha" className="text-marca-medio" />
+                      <Link to={p.url} prefetch="intent" className={`${TARJETA_ENLACE} flex min-h-16 items-center justify-between gap-3 px-5 font-semibold text-texto no-underline`}>
+                        {p.titulo} <Icono nombre="flecha-derecha" className={FLECHA} />
+                        <LineaAcento />
                       </Link>
                     </li>
                   ))}

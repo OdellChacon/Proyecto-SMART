@@ -146,10 +146,27 @@ los muestra todavía; están listos por si se quieren usar más adelante.
 - **Galería:** visor con flechas del teclado, deslizar con el dedo y precarga de las fotos vecinas.
 - **Noticias:** botón para compartir (menú del sistema en el teléfono, copiar enlace en la computadora).
 - **Formularios:** contador de caracteres en los mensajes largos y caja que crece con el texto.
-- **Avisos:** en la portada cada aviso dice cuánto le queda («Último día», «Vence mañana», «Quedan
-  N días») y se puede ocultar; lo ocultado se recuerda en ese navegador y se puede volver a mostrar.
-  La API entrega `dias_restantes` calculado con la fecha del servidor. Los mensajes de los
-  formularios (éxito, error, información, advertencia) comparten el mismo estilo y pueden cerrarse.
+- **Avisos:** lista sobria bajo la portada (punto, texto y vencimiento, sin cajas). Si vence en una
+  semana o menos, el punto y la fecha pasan a terracota («Último día», «Vence mañana», «Quedan N
+  días»). Cada aviso se puede ocultar; lo ocultado se recuerda en ese navegador y se puede volver a
+  mostrar. La API entrega `dias_restantes` calculado con la fecha del servidor. Los mensajes de los
+  formularios (éxito, error, información, advertencia) usan un borde fino y pueden cerrarse.
+- **Portada:** las carreras se muestran como un índice numerado (foto, nombre, resumen y ficha
+  corta) junto a una presentación que queda fija al bajar; «¿Cómo ingresar?» une los pasos con una
+  línea (horizontal en pantallas anchas, vertical en el teléfono) y muestra debajo el calendario de
+  admisión con las fechas que aún no terminaron (máximo cuatro, tomadas de *Admisión* en el panel).
+  En «Noticias y eventos», la noticia más reciente va grande y las tres siguientes en filas con
+  miniatura; debajo, una agenda de los cuatro próximos eventos que marca «Hoy», «Mañana» o
+  «En N días» cuando falta menos de una semana y enlaza al evento en el calendario.
+- **Pie:** compacto, en una sola franja (marca y dirección, contacto, secciones y accesos) con una
+  línea terracota arriba y, al final, derechos y enlaces legales. Las subsecciones no se repiten:
+  ya están en el menú y en cada página.
+- **Datos estructurados** (`CollegeOrUniversity`): van en la capa del sitio (`routes/_sitio.tsx`), en
+  el HTML del servidor, y no en el `<head>` de la portada. Así React nunca inserta ni quita un
+  `<script>` al navegar; algunas extensiones del navegador interceptan esa operación y rompían la página.
+- **Tarjetas:** un solo estilo para todo el sitio (`components/ui/Tarjeta.tsx`): borde fino, sin
+  sombra en reposo; al pasar el puntero, borde algo más oscuro, sombra muy suave, la foto se acerca
+  un poco y una línea terracota crece al pie. Con teclado, la tarjeta entera muestra el contorno de foco.
 - Los enlaces precargan la página siguiente al pasar el puntero (`prefetch="intent"`), y en páginas
   largas aparece **Volver arriba**.
 

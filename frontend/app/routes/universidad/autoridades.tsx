@@ -1,6 +1,7 @@
 import { PaginaDeSeccion, Parrafos, Pendiente } from "~/components/sitio/Pagina";
 import { Foto } from "~/components/ui/Foto";
 import { Icono } from "~/components/ui/Icono";
+import { ETIQUETA, TARJETA } from "~/components/ui/Tarjeta";
 import { obtener } from "~/lib/contenido.server";
 import { metaDePagina } from "~/lib/meta";
 import type { Autoridad } from "~/lib/tipos";
@@ -25,7 +26,7 @@ export default function Autoridades({ loaderData }: Route.ComponentProps) {
           {autoridades.map((a) => (
             <li
               key={a.id}
-              className="flex flex-col gap-5 rounded-lg border border-borde p-6 sm:flex-row"
+              className={`${TARJETA} flex flex-col gap-5 p-6 sm:flex-row`}
             >
               {a.foto ? (
                 <Foto
@@ -41,7 +42,7 @@ export default function Autoridades({ loaderData }: Route.ComponentProps) {
                 </div>
               )}
               <div className="flex flex-col gap-2">
-                <p className="text-sm font-bold tracking-wide text-acento uppercase">{a.cargo}</p>
+                <p className={`${ETIQUETA} text-acento`}>{a.cargo}</p>
                 <h2 className="text-xl">{a.nombre}</h2>
                 {a.resena && (
                   <Parrafos texto={a.resena} className="text-base leading-7 text-texto-secundario" />

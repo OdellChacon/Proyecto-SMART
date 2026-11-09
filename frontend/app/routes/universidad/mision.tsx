@@ -1,4 +1,5 @@
 import { PaginaDeSeccion, Parrafos, Pendiente } from "~/components/sitio/Pagina";
+import { TARJETA } from "~/components/ui/Tarjeta";
 import { metaDePagina } from "~/lib/meta";
 import { useSitio } from "~/lib/useSitio";
 
@@ -25,7 +26,7 @@ export default function Mision() {
             <section
               key={b.id}
               aria-labelledby={`t-${b.id}`}
-              className="flex flex-col gap-4 rounded-lg border-t-4 border-marca bg-sutil p-6 lg:p-8"
+              className={`${TARJETA} flex flex-col gap-4 p-6 lg:p-8`}
             >
               <h2 id={`t-${b.id}`} className="text-2xl">
                 {b.titulo}
@@ -41,7 +42,7 @@ export default function Mision() {
           {valores.length > 0 ? (
             <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {valores.map((v) => (
-                <li key={v.nombre} className="flex flex-col gap-2 rounded-lg border border-borde p-6">
+                <li key={v.nombre} className={`${TARJETA} flex flex-col gap-2 p-6`}>
                   <p className="font-serif text-xl font-semibold text-marca">{v.nombre}</p>
                   {v.descripcion && <p className="text-texto-secundario">{v.descripcion}</p>}
                 </li>

@@ -4,6 +4,7 @@ import { CabeceraPagina, Lista, Parrafos, Pendiente, TituloBloque } from "~/comp
 import { EnlaceBoton } from "~/components/ui/Boton";
 import { Foto } from "~/components/ui/Foto";
 import { Icono } from "~/components/ui/Icono";
+import { TARJETA } from "~/components/ui/Tarjeta";
 import { obtener } from "~/lib/contenido.server";
 import { metaDePagina } from "~/lib/meta";
 import type { Carrera, Semestre } from "~/lib/tipos";
@@ -150,7 +151,7 @@ export default function CarreraPagina({ loaderData }: Route.ComponentProps) {
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[1fr_22rem] lg:gap-14 lg:py-14">
         {/* Ficha rápida: en el teléfono va primero, justo después del título */}
         <aside className="lg:order-2">
-          <div className="flex flex-col gap-6 rounded-lg border border-borde bg-superficie p-6 shadow-sm lg:sticky lg:top-6">
+          <div className={`${TARJETA} flex flex-col gap-6 p-6 lg:sticky lg:top-6`}>
             <h2 className="text-xl">Ficha rápida</h2>
             <dl className="flex flex-col divide-y divide-borde">
               {ficha.map(([k, v]) => (

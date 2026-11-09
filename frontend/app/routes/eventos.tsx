@@ -2,6 +2,7 @@ import { Link } from "react-router";
 
 import { PaginaDeSeccion, Parrafos } from "~/components/sitio/Pagina";
 import { Icono } from "~/components/ui/Icono";
+import { TARJETA } from "~/components/ui/Tarjeta";
 import { obtener } from "~/lib/contenido.server";
 import { claveDia, dia, diaSemana, hora, mesCorto, mesYAno } from "~/lib/formato";
 import { metaDePagina } from "~/lib/meta";
@@ -143,10 +144,10 @@ export default function Eventos({ loaderData }: Route.ComponentProps) {
           ) : (
             <ul className="flex flex-col gap-4">
               {eventos.map((e) => (
-                <li key={e.id} id={`evento-${e.id}`} className="flex scroll-mt-6 gap-5 rounded-lg border border-borde p-5 target:border-acento target:ring-2 target:ring-acento lg:p-6">
-                  <span className="flex w-16 shrink-0 flex-col items-center self-start rounded-md bg-marca py-3 text-sobre-marca">
-                    <span className="font-serif text-3xl leading-8 font-semibold">{dia(e.inicio)}</span>
-                    <span className="text-xs font-bold uppercase">{mesCorto(e.inicio)}</span>
+                <li key={e.id} id={`evento-${e.id}`} className={`${TARJETA} flex scroll-mt-6 gap-5 p-5 target:border-acento target:ring-2 target:ring-acento/30 lg:p-6`}>
+                  <span className="flex w-16 shrink-0 flex-col items-center self-start border-r border-borde pr-5 text-marca">
+                    <span className="font-serif text-3xl leading-8 font-semibold tabular-nums">{dia(e.inicio)}</span>
+                    <span className="text-xs font-bold tracking-wider text-acento uppercase">{mesCorto(e.inicio)}</span>
                   </span>
                   <div className="flex min-w-0 flex-col gap-2">
                     <h3 className="text-xl">{e.nombre}</h3>

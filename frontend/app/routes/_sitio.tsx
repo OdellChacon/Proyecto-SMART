@@ -24,6 +24,32 @@ export function shouldRevalidate() {
   return false;
 }
 
+/**
+ * Datos estructurados de organización educativa (requisito de SEO del documento).
+ * Van aquí, en la capa que no cambia al navegar, y no en el <head> de la portada: así llegan
+ * en el HTML del servidor y React nunca tiene que insertar ni quitar un <script> en el
+ * navegador (algunas extensiones interceptan esas operaciones y rompen la página).
+ */
+function DatosEstructurados({ sitio }: { sitio: Sitio }) {
+  const datos = {
+    "@context": "https://schema.org",
+    "@type": "CollegeOrUniversity",
+    name: sitio.nombre,
+    ...(sitio.siglas && { alternateName: sitio.siglas }),
+    ...(sitio.direccion && { address: sitio.direccion }),
+    ...(sitio.telefonos[0] && { telephone: sitio.telefonos[0] }),
+    sameAs: sitio.perfil_redes.map((r) => r.url),
+  };
+  return (
+    <script
+      type="application/ld+json"
+      suppressHydrationWarning
+      // «<» escapado: un texto del panel no puede cerrar la etiqueta <script>.
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(datos).replace(/</g, "\\u003c") }}
+    />
+  );
+}
+
 function Marco({ sitio, children }: { sitio: Sitio; children: ReactNode }) {
   const { pathname } = useLocation();
   // La primera carga llega ya dibujada desde el servidor: solo se anima al navegar dentro del sitio.
@@ -36,6 +62,7 @@ function Marco({ sitio, children }: { sitio: Sitio; children: ReactNode }) {
   const cargando = useNavigation().state === "loading";
   return (
     <div className="flex min-h-dvh flex-col">
+      <DatosEstructurados sitio={sitio} />
       <BarraProgreso />
       {sitio.es_demostracion && (
         <div className="bg-aviso-sutil text-aviso">

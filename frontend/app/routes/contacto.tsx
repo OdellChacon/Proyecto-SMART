@@ -9,6 +9,7 @@ import { Casilla } from "~/components/ui/Casilla";
 import { Icono, type NombreIcono } from "~/components/ui/Icono";
 import { Mensaje } from "~/components/ui/Mensaje";
 import { Turnstile } from "~/components/ui/Turnstile";
+import { TARJETA } from "~/components/ui/Tarjeta";
 import { correoLimpio, telefonoParaEnlace } from "~/lib/formato";
 import { metaDePagina } from "~/lib/meta";
 import { useEnvio } from "~/lib/useEnvio";
@@ -122,7 +123,7 @@ export default function Contacto() {
         </section>
 
         <aside className="flex flex-col gap-8">
-          <section aria-labelledby="horarios" className="flex flex-col gap-6 rounded-lg border border-borde p-6">
+          <section aria-labelledby="horarios" className={`${TARJETA} flex flex-col gap-6 p-6`}>
             <h2 id="horarios" className="scroll-mt-6 text-xl">Horarios, teléfonos y redes</h2>
             {sitio.horario.length > 0 && (
               <Dato icono="reloj" titulo="Horario de atención">

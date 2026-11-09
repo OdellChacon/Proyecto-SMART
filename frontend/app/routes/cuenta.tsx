@@ -4,6 +4,7 @@ import { redirect, useNavigate } from "react-router";
 import { Boton } from "~/components/ui/Boton";
 import { Icono, type NombreIcono } from "~/components/ui/Icono";
 import { Marca } from "~/components/ui/Marca";
+import { FLECHA, LineaAcento, TARJETA, TARJETA_ENLACE } from "~/components/ui/Tarjeta";
 import { auth, type Usuario } from "~/lib/auth";
 
 import type { Route } from "./+types/cuenta";
@@ -89,7 +90,7 @@ export default function Cuenta({ loaderData }: Route.ComponentProps) {
           <h2 id="titulo-datos" className="text-xl">
             Datos de la cuenta
           </h2>
-          <dl className="grid gap-6 rounded-lg border border-borde bg-superficie p-6 sm:grid-cols-2">
+          <dl className={`${TARJETA} grid gap-6 p-6 sm:grid-cols-2`}>
             <Dato etiqueta="Nombre" valor={usuario.nombre_completo} />
             <Dato etiqueta="Correo electrónico" valor={usuario.email} />
             <Dato
@@ -144,29 +145,28 @@ function Acceso({
 }) {
   const contenido = (
     <>
-      <span className="inline-flex size-14 items-center justify-center rounded-md bg-marca-sutil text-marca-medio">
-        <Icono nombre={icono} tamano={28} />
-      </span>
+      <Icono nombre={icono} tamano={28} className="text-marca-medio" />
       <span className="text-xl font-semibold text-texto">{titulo}</span>
       <span className="text-texto-secundario">{texto}</span>
       {href ? (
         <span className="mt-auto inline-flex items-center gap-1 font-semibold text-enlace">
-          Entrar <Icono nombre="flecha-derecha" tamano={20} />
+          Entrar <Icono nombre="flecha-derecha" tamano={20} className={FLECHA} />
         </span>
       ) : (
-        <span className="mt-auto self-start rounded-full bg-aviso-sutil px-3 py-1 text-sm font-semibold text-aviso">
+        <span className="mt-auto self-start text-sm font-semibold text-texto-secundario">
           Próximamente
         </span>
       )}
     </>
   );
-  const clases = "flex h-full flex-col gap-3 rounded-lg border border-borde bg-superficie p-6 no-underline";
+  const clases = "flex h-full flex-col gap-3 p-6 no-underline";
   return href ? (
-    <a href={href} className={`${clases} hover:border-marca-medio`}>
+    <a href={href} className={`${TARJETA_ENLACE} ${clases}`}>
       {contenido}
+      <LineaAcento />
     </a>
   ) : (
-    <div className={clases}>{contenido}</div>
+    <div className={`${TARJETA} ${clases}`}>{contenido}</div>
   );
 }
 

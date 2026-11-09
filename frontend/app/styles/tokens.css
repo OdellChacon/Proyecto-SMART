@@ -35,6 +35,8 @@
   --color-acento: #b5462a;
   --color-acento-hover: #963820;
   --color-acento-sutil: #fbede8;
+  /* Terracota aclarado para íconos y detalles sobre el azul de marca (pie, portada). */
+  --color-acento-claro: #e9967c;
 
   /* Texto */
   --color-texto: #1c1b19;

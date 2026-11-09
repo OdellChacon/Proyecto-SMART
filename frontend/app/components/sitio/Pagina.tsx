@@ -98,7 +98,7 @@ export function NavSeccion({ titulo, enlaces }: { titulo: string; enlaces: Enlac
 /** Contenido con navegación de sección a la izquierda. */
 export function ConNavegacion({ nav, children }: { nav: ReactNode; children: ReactNode }) {
   return (
-    <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[16rem_1fr] lg:gap-14 lg:py-14">
+    <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[16rem_1fr] lg:gap-14 lg:py-14">
       <aside>{nav}</aside>
       <div className="min-w-0">{children}</div>
     </div>

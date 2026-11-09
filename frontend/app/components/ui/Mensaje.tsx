@@ -4,11 +4,11 @@ import { Icono, type NombreIcono } from "./Icono";
 
 type Tipo = "exito" | "error" | "info" | "aviso";
 
-const ESTILO: Record<Tipo, { caja: string; insignia: string; texto: string; icono: NombreIcono }> = {
-  exito: { caja: "bg-exito-sutil border-exito/30 border-l-exito", insignia: "bg-exito", texto: "text-exito", icono: "check" },
-  error: { caja: "bg-error-sutil border-error/30 border-l-error", insignia: "bg-error", texto: "text-error", icono: "alerta" },
-  info: { caja: "bg-marca-sutil border-marca-medio/30 border-l-marca-medio", insignia: "bg-marca-medio", texto: "text-marca-medio", icono: "info" },
-  aviso: { caja: "bg-aviso-sutil border-aviso/30 border-l-aviso", insignia: "bg-aviso", texto: "text-aviso", icono: "aviso" },
+const ESTILO: Record<Tipo, { caja: string; texto: string; icono: NombreIcono }> = {
+  exito: { caja: "bg-exito-sutil border-l-exito", texto: "text-exito", icono: "exito" },
+  error: { caja: "bg-error-sutil border-l-error", texto: "text-error", icono: "alerta" },
+  info: { caja: "bg-marca-sutil border-l-marca-medio", texto: "text-marca-medio", icono: "info" },
+  aviso: { caja: "bg-aviso-sutil border-l-aviso", texto: "text-aviso", icono: "aviso" },
 };
 
 interface Props {
@@ -33,14 +33,12 @@ export const Mensaje = forwardRef<HTMLDivElement, Props>(function Mensaje(
       ref={ref}
       tabIndex={-1}
       role={tipo === "error" ? "alert" : "status"}
-      className={`relative flex animate-aparecer items-start gap-4 rounded-lg border border-l-4 px-5 py-4 scroll-mt-6 focus:outline-none focus-visible:ring-2 focus-visible:ring-foco sm:px-6 sm:py-5 ${e.caja} ${
+      className={`relative flex animate-aparecer items-start gap-4 rounded-r-md border-l-2 px-5 py-4 scroll-mt-6 focus:outline-none focus-visible:ring-2 focus-visible:ring-foco sm:px-6 sm:py-5 ${e.caja} ${
         alCerrar ? "pr-14" : ""
       }`}
     >
-      <span aria-hidden className={`flex size-8 shrink-0 items-center justify-center rounded-full text-sobre-marca ${e.insignia}`}>
-        <Icono nombre={e.icono} tamano={18} />
-      </span>
-      <div className="flex min-w-0 flex-col gap-1 pt-0.5">
+      <Icono nombre={e.icono} tamano={22} className={`mt-px shrink-0 ${e.texto}`} />
+      <div className="flex min-w-0 flex-col gap-1">
         <p className={`font-semibold ${e.texto}`}>{titulo}</p>
         {children && <div className="text-base text-texto">{children}</div>}
       </div>

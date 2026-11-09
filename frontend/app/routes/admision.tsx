@@ -1,6 +1,7 @@
 import { CabeceraPagina, Lista, Parrafos, Pendiente, TituloBloque } from "~/components/sitio/Pagina";
 import { EnlaceBoton } from "~/components/ui/Boton";
 import { Icono } from "~/components/ui/Icono";
+import { TARJETA } from "~/components/ui/Tarjeta";
 import { obtener } from "~/lib/contenido.server";
 import { fecha } from "~/lib/formato";
 import { metaDePagina } from "~/lib/meta";
@@ -64,7 +65,7 @@ export default function AdmisionPagina({ loaderData }: Route.ComponentProps) {
               <TituloBloque id="fechas">Fechas importantes</TituloBloque>
               <ol className="grid gap-4 sm:grid-cols-2">
                 {fechas.map((f) => (
-                  <li key={f.titulo} className="flex gap-4 rounded-lg border border-borde p-5">
+                  <li key={f.titulo} className={`${TARJETA} flex gap-4 p-5`}>
                     <Icono nombre="calendario" className="mt-1 text-acento" />
                     <div className="flex flex-col gap-1">
                       <p className="font-semibold">{f.titulo}</p>
@@ -82,7 +83,7 @@ export default function AdmisionPagina({ loaderData }: Route.ComponentProps) {
           <section aria-labelledby="requisitos">
             <TituloBloque id="requisitos">Requisitos y documentos</TituloBloque>
             {requisitos.length ? (
-              <div className="rounded-lg border border-borde p-6 lg:p-8">
+              <div className={`${TARJETA} p-6 lg:p-8`}>
                 <Lista elementos={requisitos} />
               </div>
             ) : (

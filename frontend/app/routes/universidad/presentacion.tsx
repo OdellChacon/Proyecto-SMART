@@ -2,6 +2,7 @@ import { Link } from "react-router";
 
 import { PaginaDeSeccion, Parrafos, Pendiente } from "~/components/sitio/Pagina";
 import { Icono } from "~/components/ui/Icono";
+import { FLECHA, LineaAcento, TARJETA_ENLACE } from "~/components/ui/Tarjeta";
 import { MENU } from "~/lib/mapa";
 import { metaDePagina } from "~/lib/meta";
 import { useSitio } from "~/lib/useSitio";
@@ -25,7 +26,7 @@ export default function LaUniversidad() {
         {sitio.mision ? (
           <section
             aria-labelledby="t-mision"
-            className="flex flex-col gap-4 rounded-lg border-l-4 border-acento bg-sutil p-6 lg:p-8"
+            className="flex flex-col gap-4 border-l-2 border-acento py-2 pl-6 lg:pl-8"
           >
             <h2 id="t-mision" className="text-xl">
               Nuestra misión
@@ -46,10 +47,11 @@ export default function LaUniversidad() {
                 <Link
                   to={p.url}
                   prefetch="intent"
-                  className="group flex min-h-20 items-center justify-between gap-4 rounded-lg border border-borde bg-superficie px-6 py-4 text-lg font-semibold text-texto no-underline transition-colors hover:border-marca-medio hover:bg-marca-sutil"
+                  className={`${TARJETA_ENLACE} flex min-h-20 items-center justify-between gap-4 px-6 py-4 text-lg font-semibold text-texto no-underline`}
                 >
                   {p.titulo}
-                  <Icono nombre="flecha-derecha" className="text-marca-medio" />
+                  <Icono nombre="flecha-derecha" className={FLECHA} />
+                  <LineaAcento />
                 </Link>
               </li>
             ))}

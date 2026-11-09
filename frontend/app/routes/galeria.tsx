@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { PaginaDeSeccion } from "~/components/sitio/Pagina";
 import { FotoPendiente } from "~/components/sitio/Tarjetas";
 import { Foto } from "~/components/ui/Foto";
+import { LineaAcento, TARJETA_ENLACE } from "~/components/ui/Tarjeta";
 import { obtener } from "~/lib/contenido.server";
 import { fecha } from "~/lib/formato";
 import { metaDePagina } from "~/lib/meta";
@@ -26,15 +27,17 @@ export default function Galeria({ loaderData }: Route.ComponentProps) {
       ) : (
         <ul className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
           {albumes.map((a, i) => (
-            <li key={a.id} className="group relative flex flex-col overflow-hidden rounded-lg border border-borde hover:shadow-md">
+            <li key={a.id} className={`${TARJETA_ENLACE} flex flex-col`}>
+              <div className="overflow-hidden">
               {a.portada ? (
-                <Foto imagen={a.portada.imagen} alt="" sizes="(min-width: 1280px) 30vw, (min-width: 640px) 45vw, 100vw" loading={i < 3 ? "eager" : "lazy"} className="aspect-[3/2] w-full object-cover" />
+                <Foto imagen={a.portada.imagen} alt="" sizes="(min-width: 1280px) 30vw, (min-width: 640px) 45vw, 100vw" loading={i < 3 ? "eager" : "lazy"} className="aspect-[3/2] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03] motion-reduce:transition-none" />
               ) : (
                 <FotoPendiente texto="Álbum sin fotos" className="aspect-[3/2] w-full" />
               )}
+              </div>
               <div className="flex flex-col gap-1 p-5">
                 <h2 className="text-xl">
-                  <Link to={`/galeria/${a.id}`} className="text-texto no-underline after:absolute after:inset-0 group-hover:underline">
+                  <Link to={`/galeria/${a.id}`} className="text-texto no-underline after:absolute after:inset-0 focus-visible:outline-none">
                     {a.titulo}
                   </Link>
                 </h2>
@@ -42,6 +45,7 @@ export default function Galeria({ loaderData }: Route.ComponentProps) {
                   {fecha(a.fecha)} · {a.total_fotos} {a.total_fotos === 1 ? "foto" : "fotos"}
                 </p>
               </div>
+              <LineaAcento />
             </li>
           ))}
         </ul>
