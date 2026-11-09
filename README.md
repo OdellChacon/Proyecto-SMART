@@ -316,6 +316,21 @@ Todo está preparado en [`render.yaml`](render.yaml) (Render › New › Bluepri
 - **plataforma-respaldos**: tarea diaria (`infra/respaldos`) que copia la base y los archivos a un
   bucket de R2 aparte y conserva 30 días.
 
+**Primer despliegue (sin R2 todavía).** Las fotos y PDF se guardan en el disco persistente de
+`plataforma-api` (`/var/data/media`) y los entrega Django (`SERVIR_MEDIA_DESDE_DISCO`). Al cargar
+`R2_BUCKET` pasan a R2 y esa ruta deja de existir. El respaldo extra a R2 está comentado en
+`render.yaml` hasta tener el bucket.
+
+1. Render › New › Blueprint › el repositorio. Al pedir las variables `sync: false`, por ahora basta
+   con dejar vacías las de correo, Turnstile, R2 y analítica.
+2. Cuando estén creados los servicios, completar en **plataforma-api**:
+   - `DJANGO_ALLOWED_HOSTS`: el dominio de la web (ej.: `plataforma-web-xxxx.onrender.com`) y el
+     nombre interno de la API, que aparece en *plataforma-api › Connect › Internal* (sin el puerto).
+   - `FRONTEND_URL` y `DJANGO_CSRF_TRUSTED_ORIGINS`: `https://` + el dominio de la web.
+   - En **plataforma-web**, `SITIO_URL` con esa misma dirección.
+3. En *plataforma-api › Shell*: `python manage.py cargar_contenido_ejemplo` (contenido de
+   demostración) y `python manage.py createsuperuser` (cuenta del panel).
+
 | Servicio | Qué configurar |
 |---|---|
 | Dominio y CDN | Cloudflare (DNS con proxy) apuntando a plataforma-web |

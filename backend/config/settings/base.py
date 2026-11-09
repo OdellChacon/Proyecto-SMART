@@ -184,7 +184,9 @@ STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 # Archivos que sube el personal (PDF, fotos). En producción: R2 o S3.
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = Path(env("DJANGO_MEDIA_ROOT", default=str(BASE_DIR / "media")))
+# En producción, Django solo entrega /media/ si no hay R2 (ver settings/prod.py).
+SERVIR_MEDIA_DESDE_DISCO = False
 # PDF de pensum y reglamentos pueden pesar varios MB.
 DATA_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024
 FILE_UPLOAD_MAX_MEMORY_SIZE = 5 * 1024 * 1024

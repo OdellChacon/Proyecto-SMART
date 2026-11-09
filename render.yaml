@@ -4,7 +4,7 @@
 #   y /media a la API por la red privada de Render.
 # - plataforma-api: Django + DRF como servicio PRIVADO (no tiene dirección pública).
 # - plataforma-db: PostgreSQL 17 administrado, con copias diarias de Render.
-# - plataforma-respaldos: copia diaria extra de la base de datos a Cloudflare R2.
+# - plataforma-respaldos: copia diaria extra a Cloudflare R2 (desactivada hasta tener R2).
 #
 # Las variables con «sync: false» se completan a mano en el panel de Render la primera vez.
 # Dominio: apuntar el dominio (Cloudflare, proxy activado) a plataforma-web.
@@ -28,6 +28,12 @@ services:
     buildCommand: pip install -r requirements/base.txt && python manage.py collectstatic --noinput
     preDeployCommand: python manage.py migrate --noinput && python manage.py createcachetable
     startCommand: gunicorn config.wsgi --workers 3 --timeout 60 --bind 0.0.0.0:$PORT --access-logfile -
+    # Mientras no haya R2, las fotos y PDF que sube el personal se guardan en este disco
+    # persistente y los entrega Django. Con R2 configurado el disco deja de usarse.
+    disk:
+      name: archivos
+      mountPath: /var/data
+      sizeGB: 1
     envVars:
       - key: PYTHON_VERSION
         value: "3.13.5"
@@ -37,6 +43,8 @@ services:
         generateValue: true
       - key: DATABASE_URL
         fromDatabase: { name: plataforma-db, property: connectionString }
+      - key: DJANGO_MEDIA_ROOT
+        value: /var/data/media
       # Dominio público + nombre interno del servicio (lo usa el render en servidor).
       - key: DJANGO_ALLOWED_HOSTS
         sync: false  # ej.: universidad.edu.ve,www.universidad.edu.ve,plataforma-api
@@ -89,21 +97,23 @@ services:
       - { key: VITE_TURNSTILE_SITE_KEY, sync: false }
       - { key: VITE_CF_ANALYTICS_TOKEN, sync: false }
 
-  - type: cron
-    name: plataforma-respaldos
-    runtime: docker
-    region: virginia
-    plan: starter
-    schedule: "0 7 * * *"  # todos los días a las 3:00 a. m. de Venezuela
-    dockerfilePath: ./infra/respaldos/Dockerfile
-    dockerContext: .
-    envVars:
-      - key: DATABASE_URL
-        fromDatabase: { name: plataforma-db, property: connectionString }
-      - { key: R2_RESPALDOS_BUCKET, sync: false }
-      - { key: R2_ENDPOINT, sync: false }
-      - { key: R2_ACCESS_KEY_ID, sync: false }
-      - { key: R2_SECRET_ACCESS_KEY, sync: false }
-      - { key: R2_BUCKET, sync: false }
-      - key: DIAS_A_CONSERVAR
-        value: "30"
+  # Respaldo diario extra a Cloudflare R2. Desactivado hasta crear el bucket de R2:
+  # sin él la tarea fallaría todos los días. Para activarlo, quitar los «#» de este bloque.
+  # - type: cron
+  #   name: plataforma-respaldos
+  #   runtime: docker
+  #   region: virginia
+  #   plan: starter
+  #   schedule: "0 7 * * *"  # todos los días a las 3:00 a. m. de Venezuela
+  #   dockerfilePath: ./infra/respaldos/Dockerfile
+  #   dockerContext: .
+  #   envVars:
+  #     - key: DATABASE_URL
+  #       fromDatabase: { name: plataforma-db, property: connectionString }
+  #     - { key: R2_RESPALDOS_BUCKET, sync: false }
+  #     - { key: R2_ENDPOINT, sync: false }
+  #     - { key: R2_ACCESS_KEY_ID, sync: false }
+  #     - { key: R2_SECRET_ACCESS_KEY, sync: false }
+  #     - { key: R2_BUCKET, sync: false }
+  #     - key: DIAS_A_CONSERVAR
+  #       value: "30"

@@ -46,6 +46,8 @@ STORAGES = {
     ),
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
 }
+# Sin R2 los archivos viven en un disco persistente (DJANGO_MEDIA_ROOT) y los entrega Django.
+SERVIR_MEDIA_DESDE_DISCO = not _bucket
 
 # Caché compartida entre procesos de gunicorn (límites por IP, variantes de imágenes).
 CACHES = {
